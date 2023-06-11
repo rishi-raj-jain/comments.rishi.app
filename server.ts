@@ -59,4 +59,26 @@ app.get('/', async (req, res) => {
   }
 })
 
+app.post('/', async (req, res) => {
+  try {
+    if (req.query.token !== process.env['COMMENTS_TOKEN']) {
+      res.status(534)
+      res.end()
+      return
+    }
+    const firebase = admin.firestore()
+    const { name, slug, content, email } = req.body
+    const commentsRef = firebase.collection('comments')
+    await commentsRef.add({ name, slug, content, email, time: admin.firestore.Timestamp.fromDate(new Date()) })
+    res.status(200)
+    res.end()
+    return
+  } catch (e) {
+    console.log(e.message || e.toString())
+    res.status(534)
+    res.end()
+    return
+  }
+})
+
 app.listen(port)
