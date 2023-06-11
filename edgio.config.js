@@ -3,7 +3,7 @@ module.exports = {
   express: {
     appPath: './server.ts',
   },
-  include: {
+  includeFiles: {
     '.env': true,
   },
 }
